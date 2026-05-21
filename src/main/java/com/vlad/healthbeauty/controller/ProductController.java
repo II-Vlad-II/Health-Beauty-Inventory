@@ -31,6 +31,12 @@ public class ProductController {
         return productService.findAll();
     }
 
+    @GetMapping("/low-stock")
+    @Operation(summary = "Get low stock products", description = "Access: Public")
+    public List<Product> getLowStock(@RequestParam(defaultValue = "10") int threshold) {
+        return productService.findLowStock(threshold);
+    }
+
     @GetMapping("/{id}")
     @Operation(summary = "Get product by id", description = "Access: Authenticated user")
     public ResponseEntity<Product> getById(@PathVariable Long id) {

@@ -22,162 +22,54 @@
             --danger-text: #9f1239;
             --accent: #25c2f0;
         }
-
-        * {
-            box-sizing: border-box;
-        }
-
+        * { box-sizing: border-box; }
         body {
-            margin: 0;
-            min-height: 100vh;
-            color: var(--text);
+            margin: 0; min-height: 100vh; color: var(--text);
             font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(-45deg, var(--bg-a), var(--bg-b), var(--bg-c), #0e4b79);
-            background-size: 350% 350%;
-            animation: moveBg 16s ease infinite;
+            background-size: 350% 350%; animation: moveBg 16s ease infinite;
         }
-
         @keyframes moveBg {
             0% { background-position: 0 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0 50%; }
         }
+        .login-screen { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; animation: fadeInScale 0.7s ease; }
+        .login-screen.hiding { animation: fadeOutScale 0.5s ease forwards; }
+        .login-card { background: rgba(7, 28, 47, 0.85); border: 1px solid var(--card-border); border-radius: 24px; padding: 44px 38px; width: 100%; max-width: 420px; box-shadow: 0 24px 70px rgba(0, 0, 0, 0.45); backdrop-filter: blur(12px); text-align: center; }
+        .login-icon { font-size: 3rem; color: var(--accent); margin-bottom: 14px; animation: floatIcon 3s ease-in-out infinite; }
+        @keyframes floatIcon { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+        .login-title { font-size: 1.55rem; margin: 0 0 6px; color: #fff; font-weight: 600; }
+        .login-subtitle { color: var(--muted); margin-bottom: 28px; font-size: 0.95rem; }
+        .login-field { position: relative; margin-bottom: 14px; }
+        .login-field i { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--muted); pointer-events: none; }
+        .login-field input { padding-left: 44px; background: rgba(2, 13, 24, 0.6); border: 1px solid rgba(168, 200, 228, 0.3); color: #e8f3ff; height: 48px; border-radius: 12px; }
+        .login-field input:focus { background: rgba(6, 22, 38, 0.85); color: #fff; border-color: var(--accent); box-shadow: 0 0 0 0.2rem rgba(37, 194, 240, 0.25); }
+        .login-field input::placeholder { color: #a8bdd4; }
+        .btn-login { width: 100%; height: 48px; background: linear-gradient(135deg, var(--accent), #1ba8d4); color: #fff; border: none; border-radius: 12px; font-weight: 600; font-size: 1rem; transition: transform 0.2s, box-shadow 0.2s; margin-top: 8px; }
+        .btn-login:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(37, 194, 240, 0.45); color: #fff; }
+        .login-hint { margin-top: 22px; padding-top: 18px; border-top: 1px solid rgba(150, 180, 206, 0.18); color: var(--muted); font-size: 0.82rem; }
+        .dashboard-screen { display: none; }
+        .dashboard-screen.showing { display: block; animation: slideUpIn 0.7s ease; }
+        @keyframes fadeInScale { from { opacity: 0; transform: scale(0.94); } to { opacity: 1; transform: scale(1); } }
+        @keyframes fadeOutScale { from { opacity: 1; transform: scale(1); } to { opacity: 0; transform: scale(1.06); } }
+        @keyframes slideUpIn { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: translateY(0); } }
+        .app-shell { max-width: 1240px; margin: 0 auto; padding: 28px 16px 44px; }
+        .hero { background: linear-gradient(130deg, rgba(20, 40, 62, 0.82), rgba(15, 54, 85, 0.8)); border: 1px solid var(--card-border); border-radius: 18px; box-shadow: 0 18px 50px rgba(0, 0, 0, 0.26); backdrop-filter: blur(7px); padding: 18px 20px; margin-bottom: 16px; }
+        .hero-title { margin: 0; font-size: 1.7rem; letter-spacing: 0.2px; display: flex; align-items: center; gap: 10px; }
+        .hero-subtitle { margin: 5px 0 0; color: var(--muted); font-size: 0.95rem; }
+        .toolbar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: space-between; margin: 14px 0 18px; }
+        .toolbar-left, .toolbar-right { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+        .status-pill { display: inline-flex; align-items: center; gap: 6px; border-radius: 999px; padding: 5px 10px; font-size: 0.84rem; border: 1px solid rgba(163, 190, 216, 0.35); color: #d3e4f5; background: rgba(10, 25, 40, 0.55); }
+        .status-pill.online { border-color: rgba(90, 201, 126, 0.5); color: #d8ffe6; background: rgba(23, 63, 39, 0.6); }
+        .surface { background: var(--card); border: 1px solid var(--card-border); border-radius: 16px; box-shadow: 0 14px 40px rgba(0, 0, 0, 0.28); overflow: hidden; backdrop-filter: blur(7px); }
+        .surface-header { padding: 14px 16px; border-bottom: 1px solid rgba(150, 180, 206, 0.18); background: linear-gradient(90deg, rgba(17, 81, 121, 0.72), rgba(26, 133, 119, 0.48)); display: flex; align-items: center; justify-content: space-between; }
+        .surface-header h2 { margin: 0; font-size: 1.05rem; font-weight: 600; letter-spacing: 0.2px; }
+        .surface-body { padding: 8px 12px 12px; }
 
-        .app-shell {
-            max-width: 1240px;
-            margin: 0 auto;
-            padding: 28px 16px 44px;
-        }
-
-        .hero {
-            background: linear-gradient(130deg, rgba(20, 40, 62, 0.82), rgba(15, 54, 85, 0.8));
-            border: 1px solid var(--card-border);
-            border-radius: 18px;
-            box-shadow: 0 18px 50px rgba(0, 0, 0, 0.26);
-            backdrop-filter: blur(7px);
-            padding: 18px 20px;
-            margin-bottom: 16px;
-        }
-
-        .hero-title {
-            margin: 0;
-            font-size: 1.7rem;
-            letter-spacing: 0.2px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .hero-subtitle {
-            margin: 5px 0 0;
-            color: var(--muted);
-            font-size: 0.95rem;
-        }
-
-        .toolbar {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            align-items: center;
-            justify-content: space-between;
-            margin: 14px 0 18px;
-        }
-
-        .toolbar-left,
-        .toolbar-right {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-
-        .glass-input {
-            border: 1px solid rgba(168, 200, 228, 0.3);
-            background: rgba(2, 13, 24, 0.45);
-            color: #e8f3ff;
-        }
-
-        .glass-input::placeholder {
-            color: #a8bdd4;
-        }
-
-        .glass-input:focus {
-            background: rgba(6, 22, 38, 0.8);
-            color: #fff;
-            border-color: var(--accent);
-            box-shadow: 0 0 0 0.2rem rgba(37, 194, 240, 0.2);
-        }
-
-        .status-pill {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            border-radius: 999px;
-            padding: 5px 10px;
-            font-size: 0.84rem;
-            border: 1px solid rgba(163, 190, 216, 0.35);
-            color: #d3e4f5;
-            background: rgba(10, 25, 40, 0.55);
-        }
-
-        .status-pill.online {
-            border-color: rgba(90, 201, 126, 0.5);
-            color: #d8ffe6;
-            background: rgba(23, 63, 39, 0.6);
-        }
-
-        .surface {
-            background: var(--card);
-            border: 1px solid var(--card-border);
-            border-radius: 16px;
-            box-shadow: 0 14px 40px rgba(0, 0, 0, 0.28);
-            overflow: hidden;
-            backdrop-filter: blur(7px);
-            transform: translateY(16px);
-            opacity: 0;
-            animation: riseIn 0.6s ease forwards;
-        }
-
-        .surface.delay {
-            animation-delay: 0.12s;
-        }
-
-        @keyframes riseIn {
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-
-        .surface-header {
-            padding: 14px 16px;
-            border-bottom: 1px solid rgba(150, 180, 206, 0.18);
-            background: linear-gradient(90deg, rgba(17, 81, 121, 0.72), rgba(26, 133, 119, 0.48));
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .surface-header h2 {
-            margin: 0;
-            font-size: 1.05rem;
-            font-weight: 600;
-            letter-spacing: 0.2px;
-        }
-
-        .surface-body {
-            padding: 8px 12px 12px;
-        }
-
-        .table {
-            color: #dbe8f5;
-            margin-bottom: 0;
-        }
-
-        .table > :not(caption) > * > * {
-            border-bottom-color: rgba(139, 169, 193, 0.18);
-        }
-
+        /* ---------- TABLES (restored to original) ---------- */
+        .table { color: #dbe8f5; margin-bottom: 0; }
+        .table > :not(caption) > * > * { border-bottom-color: rgba(139, 169, 193, 0.18); }
         .table thead th {
             color: #9fc0dc;
             font-size: 0.82rem;
@@ -185,171 +77,177 @@
             text-transform: uppercase;
             letter-spacing: 0.4px;
         }
-
         .table-hover tbody tr:hover {
             background: rgba(22, 59, 89, 0.45);
         }
 
-        .badge-low {
-            background: var(--warn-bg);
-            color: var(--warn-text);
-            border-radius: 999px;
-            padding: 5px 9px;
-            font-weight: 600;
+        /* ---------- STOCK DOT (kept) ---------- */
+        .stock-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            margin-right: 10px;
+            vertical-align: middle;
+            position: relative;
+            top: -1px;
+        }
+        .stock-dot.healthy {
+            background: #22c55e;
+            box-shadow: 0 0 10px rgba(34, 197, 94, 0.55), 0 0 0 2px rgba(34, 197, 94, 0.15);
+        }
+        .stock-dot.low {
+            background: #f59e0b;
+            box-shadow: 0 0 10px rgba(245, 158, 11, 0.55), 0 0 0 2px rgba(245, 158, 11, 0.15);
+            animation: pulseDot 2s ease-in-out infinite;
+        }
+        .stock-dot.out {
+            background: #ef4444;
+            box-shadow: 0 0 10px rgba(239, 68, 68, 0.65), 0 0 0 2px rgba(239, 68, 68, 0.2);
+            animation: pulseDot 1.6s ease-in-out infinite;
+        }
+        @keyframes pulseDot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.65; transform: scale(0.92); }
         }
 
-        .badge-out {
-            background: var(--danger-bg);
-            color: var(--danger-text);
-            border-radius: 999px;
-            padding: 5px 9px;
-            font-weight: 700;
-        }
+        .product-name { display: inline-flex; align-items: center; }
 
-        .text-muted-soft {
-            color: #9eb3c8 !important;
-        }
+        .badge-low { background: var(--warn-bg); color: var(--warn-text); border-radius: 999px; padding: 5px 9px; font-weight: 600; }
+        .badge-out { background: var(--danger-bg); color: var(--danger-text); border-radius: 999px; padding: 5px 9px; font-weight: 700; }
+        .text-muted-soft { color: #9eb3c8 !important; }
+        .modal-content { color: #212529; }
+        .btn-action { transition: transform 0.2s ease, box-shadow 0.2s ease; }
+        .btn-action:hover { transform: translateY(-1px); box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25); }
+        .quick-links a { color: #a9dcff; text-decoration: none; font-size: 0.88rem; }
+        .quick-links a:hover { color: #d8f0ff; text-decoration: underline; }
 
-        .btn-action {
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
+        .empty-state { text-align: center; padding: 38px 20px 32px; color: var(--muted); animation: fadeIn 0.5s ease; }
+        .empty-state-icon { font-size: 2.6rem; color: rgba(168, 200, 228, 0.35); margin-bottom: 12px; }
+        .empty-state-title { font-size: 1.05rem; font-weight: 600; color: #d3e4f5; margin: 0 0 4px; }
+        .empty-state-text { font-size: 0.88rem; color: var(--muted); margin: 0 auto; max-width: 360px; line-height: 1.5; }
+        .empty-state.success .empty-state-icon { color: rgba(90, 201, 126, 0.55); }
+        .empty-state.error .empty-state-icon { color: rgba(220, 80, 80, 0.55); }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        .btn-action:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
+        /* ---------- STOCK LEGEND (with thresholds) ---------- */
+        .stock-legend {
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+            font-size: 0.78rem;
+            color: #d3e4f5;
         }
-
-        .quick-links a {
-            color: #a9dcff;
-            text-decoration: none;
-            font-size: 0.88rem;
+        .stock-legend .item {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
         }
-
-        .quick-links a:hover {
-            color: #d8f0ff;
-            text-decoration: underline;
+        .stock-legend .threshold {
+            color: var(--muted);
+            font-size: 0.72rem;
+            margin-left: 2px;
         }
 
         @media (max-width: 768px) {
-            .hero-title {
-                font-size: 1.35rem;
-            }
-            .toolbar {
-                align-items: stretch;
-            }
-            .toolbar-left,
-            .toolbar-right {
-                width: 100%;
-            }
-            .toolbar-right .form-control {
-                flex: 1 1 auto;
-                min-width: 120px;
-            }
+            .hero-title { font-size: 1.35rem; }
+            .toolbar { align-items: stretch; }
+            .toolbar-left, .toolbar-right { width: 100%; }
+            .login-card { padding: 32px 24px; }
+            .stock-legend { gap: 8px; font-size: 0.72rem; }
         }
     </style>
 </head>
 <body>
 
-<div class="app-shell">
-    <section class="hero">
-        <h1 class="hero-title"><i class="fas fa-boxes-stacked"></i>Health &amp; Beauty Inventory</h1>
-        <p class="hero-subtitle">Secure stock dashboard with role-based actions and API integration.</p>
-    </section>
+<div id="loginScreen" class="login-screen">
+    <div class="login-card">
+        <div class="login-icon"><i class="fas fa-boxes-stacked"></i></div>
+        <h1 class="login-title">Health &amp; Beauty Inventory</h1>
+        <p class="login-subtitle">Sign in to access the inventory dashboard</p>
+        <div class="login-field">
+            <i class="fa-solid fa-user"></i>
+            <input id="username" class="form-control" placeholder="Username" autocomplete="username">
+        </div>
+        <div class="login-field">
+            <i class="fa-solid fa-lock"></i>
+            <input id="password" type="password" class="form-control" placeholder="Password" autocomplete="current-password">
+        </div>
+        <button class="btn btn-login" onclick="login()">
+            <i class="fa-solid fa-right-to-bracket me-2"></i>Sign In
+        </button>
+        <div class="login-hint">
+            <i class="fa-solid fa-shield-halved me-1"></i>
+            Secure access with role-based permissions
+        </div>
+    </div>
+</div>
 
-    <div class="toolbar">
-        <div class="toolbar-left">
-            <span id="loginStatus" class="status-pill"><i class="fa-regular fa-circle"></i>Not logged in</span>
-            <div class="quick-links">
-                <a href="/api/swagger-ui.html" target="_blank"><i class="fa-solid fa-book me-1"></i>Swagger UI</a>
-                <span class="mx-1">|</span>
-                <a href="/api/v3/api-docs" target="_blank"><i class="fa-solid fa-code me-1"></i>OpenAPI JSON</a>
+<div id="dashboardScreen" class="dashboard-screen">
+    <div class="app-shell">
+        <section class="hero">
+            <h1 class="hero-title"><i class="fas fa-boxes-stacked"></i>Health &amp; Beauty Inventory</h1>
+            <p class="hero-subtitle">Secure stock dashboard with role-based actions and API integration.</p>
+        </section>
+
+        <div class="toolbar">
+            <div class="toolbar-left">
+                <span id="loginStatus" class="status-pill online"><i class='fa-solid fa-circle-check'></i>Logged in</span>
+                <div class="quick-links">
+                    <a href="/api/swagger-ui.html" target="_blank"><i class="fa-solid fa-book me-1"></i>Swagger UI</a>
+                    <span class="mx-1">|</span>
+                    <a href="/api/v3/api-docs" target="_blank"><i class="fa-solid fa-code me-1"></i>OpenAPI JSON</a>
+                </div>
+            </div>
+            <div class="toolbar-right">
+                <button class="btn btn-outline-light btn-sm btn-action" onclick="logout()"><i class="fa-solid fa-right-from-bracket me-1"></i>Logout</button>
+                <button class="btn btn-outline-info btn-sm btn-action" onclick="refreshLists()"><i class="fas fa-arrows-rotate me-1"></i>Refresh</button>
+                <button class="btn btn-primary btn-sm btn-action" onclick="showProductModal()" id="addProductBtn"><i class="fas fa-plus me-1"></i>Add Product</button>
+                <button id="registerBtn" class="btn btn-outline-warning btn-sm btn-action" onclick="showRegisterModal()" style="display:none;"><i class="fa-solid fa-user-plus me-1"></i>Register</button>
             </div>
         </div>
-        <div class="toolbar-right">
-            <input id="username" class="form-control form-control-sm glass-input" placeholder="Username">
-            <input id="password" type="password" class="form-control form-control-sm glass-input" placeholder="Password">
-            <button id="loginBtn" class="btn btn-success btn-sm btn-action" onclick="login()"><i class="fa-solid fa-right-to-bracket me-1"></i>Login</button>
-            <button class="btn btn-outline-light btn-sm btn-action" onclick="logout()"><i class="fa-solid fa-right-from-bracket me-1"></i>Logout</button>
-            <button class="btn btn-outline-info btn-sm btn-action" onclick="refreshLists()"><i class="fas fa-arrows-rotate me-1"></i>Refresh</button>
-            <button class="btn btn-primary btn-sm btn-action" onclick="showProductModal()" id="addProductBtn"><i class="fas fa-plus me-1"></i>Add Product</button>
-            <button id="registerBtn" class="btn btn-outline-warning btn-sm btn-action" onclick="showRegisterModal()" style="display:none;"><i class="fa-solid fa-user-plus me-1"></i>Register</button>
-        </div>
-    </div>
 
-    <div class="row g-4">
-        <div class="col-12 col-lg-7">
-            <section class="surface">
-                <div class="surface-header">
-                    <h2><i class="fa-solid fa-list-check me-2"></i>All Products</h2>
-                    <small class="text-muted-soft">Live inventory list</small>
-                </div>
-                <div class="surface-body">
-                    <div class="table-responsive">
-                        <table class="table table-hover align-middle" id="allProductsTable">
-                            <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Price</th>
-                                <th>Stock</th>
-                                <th>Supplier</th>
-                                <th style="width: 140px;">Actions</th>
-                            </tr>
-                            </thead>
-                            <tbody></tbody>
-                        </table>
+        <div class="row g-4">
+            <div class="col-12 col-lg-7">
+                <section class="surface">
+                    <div class="surface-header">
+                        <h2><i class="fa-solid fa-list-check me-2"></i>All Products</h2>
+                        <div class="stock-legend">
+                            <span class="item"><span class="stock-dot healthy"></span>Healthy<span class="threshold">&gt;10</span></span>
+                            <span class="item"><span class="stock-dot low"></span>Low<span class="threshold">1-10</span></span>
+                            <span class="item"><span class="stock-dot out"></span>Out<span class="threshold">0</span></span>
+                        </div>
                     </div>
-                </div>
-            </section>
+                    <div class="surface-body">
+                        <div id="allProductsContainer"></div>
+                    </div>
+                </section>
+            </div>
+            <div class="col-12 col-lg-5">
+                <section class="surface">
+                    <div class="surface-header">
+                        <h2><i class="fa-solid fa-triangle-exclamation me-2"></i>Low Stock (&lt;= 10)</h2>
+                        <small class="text-muted-soft">Monitor risk items</small>
+                    </div>
+                    <div class="surface-body">
+                        <div id="lowStockContainer"></div>
+                    </div>
+                </section>
+            </div>
         </div>
 
-        <div class="col-12 col-lg-5">
-            <section class="surface delay">
-                <div class="surface-header">
-                    <h2><i class="fa-solid fa-triangle-exclamation me-2"></i>Low Stock (&lt;= 10)</h2>
-                    <small class="text-muted-soft">Monitor risk items</small>
-                </div>
-                <div class="surface-body">
-                    <div class="table-responsive">
-                        <table class="table table-hover align-middle" id="lowStockTable">
-                            <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Stock</th>
-                                <th>Supplier</th>
-                            </tr>
-                            </thead>
-                            <tbody></tbody>
-                        </table>
+        <div class="row g-4 mt-1" id="auditSection" style="display:none;">
+            <div class="col-12">
+                <section class="surface">
+                    <div class="surface-header">
+                        <h2><i class="fa-solid fa-shield-halved me-2"></i>Audit Logs</h2>
+                        <small class="text-muted-soft">Admin only: who changed what and when</small>
                     </div>
-                </div>
-            </section>
-        </div>
-    </div>
-
-    <div class="row g-4 mt-1" id="auditSection" style="display:none;">
-        <div class="col-12">
-            <section class="surface">
-                <div class="surface-header">
-                    <h2><i class="fa-solid fa-shield-halved me-2"></i>Audit Logs</h2>
-                    <small class="text-muted-soft">Admin only: who changed what and when</small>
-                </div>
-                <div class="surface-body">
-                    <div class="table-responsive">
-                        <table class="table table-hover align-middle" id="auditLogsTable">
-                            <thead>
-                            <tr>
-                                <th>User</th>
-                                <th>Action</th>
-                                <th>Entity</th>
-                                <th>Details</th>
-                                <th>Timestamp</th>
-                            </tr>
-                            </thead>
-                            <tbody></tbody>
-                        </table>
+                    <div class="surface-body">
+                        <div id="auditLogsContainer"></div>
                     </div>
-                </div>
-            </section>
+                </section>
+            </div>
         </div>
     </div>
 </div>
@@ -363,22 +261,10 @@
             </div>
             <div class="modal-body">
                 <input type="hidden" id="productId">
-                <div class="mb-2">
-                    <label class="form-label">Name</label>
-                    <input id="productName" class="form-control" required>
-                </div>
-                <div class="mb-2">
-                    <label class="form-label">Price</label>
-                    <input id="productPrice" type="number" step="0.01" class="form-control" required>
-                </div>
-                <div class="mb-2">
-                    <label class="form-label">Quantity</label>
-                    <input id="productQuantity" type="number" class="form-control" required>
-                </div>
-                <div class="mb-2">
-                    <label class="form-label">Supplier ID (optional)</label>
-                    <input id="productSupplierId" type="number" class="form-control">
-                </div>
+                <div class="mb-2"><label class="form-label">Name</label><input id="productName" class="form-control" required></div>
+                <div class="mb-2"><label class="form-label">Price</label><input id="productPrice" type="number" step="0.01" class="form-control" required></div>
+                <div class="mb-2"><label class="form-label">Quantity</label><input id="productQuantity" type="number" class="form-control" required></div>
+                <div class="mb-2"><label class="form-label">Supplier ID (optional)</label><input id="productSupplierId" type="number" class="form-control"></div>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -396,14 +282,8 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                <div class="mb-2">
-                    <label class="form-label">Username</label>
-                    <input id="regUsername" class="form-control" required>
-                </div>
-                <div class="mb-2">
-                    <label class="form-label">Password</label>
-                    <input id="regPassword" type="password" class="form-control" required>
-                </div>
+                <div class="mb-2"><label class="form-label">Username</label><input id="regUsername" class="form-control" required></div>
+                <div class="mb-2"><label class="form-label">Password</label><input id="regPassword" type="password" class="form-control" required></div>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -419,268 +299,225 @@
     let currentUser = null;
     let currentRole = "GUEST";
 
-    function setAuth(user, pass) {
-        authHeader = "Basic " + btoa(user + ":" + pass);
-        currentUser = user;
+    function setAuth(user, pass) { authHeader = "Basic " + btoa(user + ":" + pass); currentUser = user; }
+    function getHeaders() { const h = { "Content-Type": "application/json" }; if (authHeader) h["Authorization"] = authHeader; return h; }
+    function canEditProducts()  { return currentRole === "ADMIN" || currentRole === "STAFF"; }
+    function canDeleteProducts(){ return currentRole === "ADMIN"; }
+    function canAddProducts()   { return currentRole === "ADMIN"; }
+    function canRegisterUsers() { return currentRole === "ADMIN"; }
+    function canViewAuditLogs() { return currentRole === "ADMIN"; }
+    function escapeHtml(v) { return String(v ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;"); }
+
+    function stockStatus(qty) {
+        if (qty <= 0) return "out";
+        if (qty <= 10) return "low";
+        return "healthy";
     }
 
-    function getHeaders() {
-        const headers = { "Content-Type": "application/json" };
-        if (authHeader) headers["Authorization"] = authHeader;
-        return headers;
+    function buildEmptyState(icon, title, text, variant) {
+        const v = variant ? " " + variant : "";
+        return "<div class='empty-state" + v + "'>"
+            + "<div class='empty-state-icon'><i class='" + icon + "'></i></div>"
+            + "<p class='empty-state-title'>" + escapeHtml(title) + "</p>"
+            + "<p class='empty-state-text'>" + escapeHtml(text) + "</p>"
+            + "</div>";
     }
 
-    function canEditProducts() {
-        return currentRole === "ADMIN" || currentRole === "STAFF";
+    function buildTableShell(tableId, headers) {
+        let thead = "<tr>";
+        headers.forEach(h => { thead += "<th" + (h.width ? " style='width:" + h.width + ";'" : "") + ">" + escapeHtml(h.label) + "</th>"; });
+        thead += "</tr>";
+        return "<div class='table-responsive'>"
+            + "<table class='table table-hover align-middle' id='" + tableId + "'>"
+            + "<thead>" + thead + "</thead><tbody></tbody></table></div>";
     }
 
-    function canDeleteProducts() {
-        return currentRole === "ADMIN";
+    function showDashboard() {
+        const loginScreen = document.getElementById("loginScreen");
+        const dashboard = document.getElementById("dashboardScreen");
+        loginScreen.classList.add("hiding");
+        setTimeout(() => {
+            loginScreen.style.display = "none";
+            loginScreen.classList.remove("hiding");
+            dashboard.classList.add("showing");
+        }, 500);
     }
 
-    function canAddProducts() {
-        return currentRole === "ADMIN";
+    function showLoginScreen() {
+        const loginScreen = document.getElementById("loginScreen");
+        const dashboard = document.getElementById("dashboardScreen");
+        dashboard.classList.remove("showing");
+        loginScreen.style.display = "flex";
+        document.getElementById("username").value = "";
+        document.getElementById("password").value = "";
     }
 
-    function canRegisterUsers() {
-        return currentRole === "ADMIN";
-    }
-
-    function canViewAuditLogs() {
-        return currentRole === "ADMIN";
-    }
-
-    function escapeHtml(value) {
-        return String(value ?? "")
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;")
-            .replace(/'/g, "&#39;");
-    }
-
-    function updateLoginUI() {
+    function updateLoggedInUI() {
         const status = document.getElementById("loginStatus");
-        const addProductBtn = document.getElementById("addProductBtn");
-        const registerBtn = document.getElementById("registerBtn");
-        const auditSection = document.getElementById("auditSection");
-        const usernameInput = document.getElementById("username");
-        const passwordInput = document.getElementById("password");
-        const loginBtn = document.getElementById("loginBtn");
-        const loggedIn = !!authHeader;
-
-        if (loggedIn) {
-            status.classList.add("online");
-            status.innerHTML = "<i class='fa-solid fa-circle-check'></i>Logged in as " + escapeHtml(currentUser);
-        } else {
-            status.classList.remove("online");
-            status.innerHTML = "<i class='fa-regular fa-circle'></i>Not logged in";
-        }
-
-        usernameInput.style.display = loggedIn ? "none" : "inline-block";
-        passwordInput.style.display = loggedIn ? "none" : "inline-block";
-        loginBtn.style.display = loggedIn ? "none" : "inline-block";
-
-        addProductBtn.style.display = canAddProducts() ? "inline-block" : "none";
-        addProductBtn.disabled = !canAddProducts();
-        registerBtn.style.display = canRegisterUsers() ? "inline-block" : "none";
-        auditSection.style.display = canViewAuditLogs() ? "block" : "none";
+        status.innerHTML = "<i class='fa-solid fa-circle-check'></i>Logged in as " + escapeHtml(currentUser);
+        document.getElementById("addProductBtn").style.display = canAddProducts() ? "inline-block" : "none";
+        document.getElementById("registerBtn").style.display = canRegisterUsers() ? "inline-block" : "none";
+        document.getElementById("auditSection").style.display = canViewAuditLogs() ? "block" : "none";
     }
 
     async function login() {
         const user = document.getElementById("username").value.trim();
         const pass = document.getElementById("password").value;
-        if (!user || !pass) {
-            alert("Please enter username and password");
-            return;
-        }
-
+        if (!user || !pass) { alert("Please enter username and password"); return; }
         setAuth(user, pass);
         try {
-            const response = await fetch("/api/auth/me", {
-                method: "GET",
-                headers: getHeaders()
-            });
-
+            const response = await fetch("/api/auth/me", { method: "GET", headers: getHeaders() });
             if (!response.ok) {
-                authHeader = null;
-                currentUser = null;
-                currentRole = "GUEST";
-                updateLoginUI();
-                alert("Invalid username or password.");
-                return;
+                authHeader = null; currentUser = null; currentRole = "GUEST";
+                alert("Invalid username or password."); return;
             }
-
             const data = await response.json();
             currentUser = data.username || user;
             const roles = Array.isArray(data.roles) ? data.roles : [];
-            if (roles.includes("ROLE_ADMIN")) {
-                currentRole = "ADMIN";
-            } else if (roles.includes("ROLE_STAFF")) {
-                currentRole = "STAFF";
-            } else {
-                currentRole = "USER";
-            }
-
-            updateLoginUI();
+            if (roles.includes("ROLE_ADMIN")) currentRole = "ADMIN";
+            else if (roles.includes("ROLE_STAFF")) currentRole = "STAFF";
+            else currentRole = "USER";
+            updateLoggedInUI();
+            showDashboard();
             refreshLists();
         } catch (e) {
-            authHeader = null;
-            currentUser = null;
-            currentRole = "GUEST";
-            updateLoginUI();
+            authHeader = null; currentUser = null; currentRole = "GUEST";
             alert("Network error during login: " + e);
         }
     }
 
-    function logout() {
-        authHeader = null;
-        currentUser = null;
-        currentRole = "GUEST";
-        updateLoginUI();
-        refreshLists();
-    }
-
-    function refreshLists() {
-        loadAllProducts();
-        loadLowStock();
-        loadAuditLogs();
-    }
+    function logout() { authHeader = null; currentUser = null; currentRole = "GUEST"; showLoginScreen(); }
+    function refreshLists() { loadAllProducts(); loadLowStock(); loadAuditLogs(); }
 
     function loadAllProducts() {
-        fetch("/api/products")
+        const container = document.getElementById("allProductsContainer");
+        fetch("/api/products", { headers: getHeaders() })
             .then(r => r.json())
             .then(products => {
-                const tbody = document.querySelector("#allProductsTable tbody");
-                tbody.innerHTML = "";
                 if (!products.length) {
-                    tbody.innerHTML = "<tr><td colspan='5' class='text-center text-muted-soft'>No products found</td></tr>";
+                    container.innerHTML = buildEmptyState(
+                        "fa-solid fa-box-open",
+                        "No products yet",
+                        "Your inventory is empty. Use the Add Product button to register the first product."
+                    );
                     return;
                 }
-
+                container.innerHTML = buildTableShell("allProductsTable", [
+                    { label: "Name" }, { label: "Price" }, { label: "Stock" }, { label: "Supplier" }, { label: "Actions", width: "140px" }
+                ]);
+                const tbody = container.querySelector("tbody");
                 products.forEach(p => {
                     const tr = document.createElement("tr");
-                    const stockCell = p.stockQuantity <= 0
-                        ? "<span class='badge-out'>Out of stock</span>"
-                        : p.stockQuantity <= 10
-                            ? "<span class='badge-low'>" + p.stockQuantity + "</span>"
-                            : p.stockQuantity;
-
+                    const status = stockStatus(p.stockQuantity);
+                    const stockCell = p.stockQuantity <= 0 ? "<span class='badge-out'>Out of stock</span>"
+                        : p.stockQuantity <= 10 ? "<span class='badge-low'>" + p.stockQuantity + "</span>" : p.stockQuantity;
                     const supplierId = p.supplier ? p.supplier.id : null;
-                    const safeName = escapeHtml(p.name);
-                    const safeSupplierName = p.supplier ? escapeHtml(p.supplier.name) : "-";
-
                     tr.innerHTML = ""
-                        + "<td>" + safeName + "</td>"
+                        + "<td><span class='product-name'><span class='stock-dot " + status + "'></span>" + escapeHtml(p.name) + "</span></td>"
                         + "<td>$" + p.price + "</td>"
                         + "<td>" + stockCell + "</td>"
-                        + "<td>" + safeSupplierName + "</td>"
+                        + "<td>" + (p.supplier ? escapeHtml(p.supplier.name) : "-") + "</td>"
                         + "<td class='actions-col'></td>";
-
                     const actionsCell = tr.querySelector(".actions-col");
-                    let hasAnyAction = false;
-
+                    let any = false;
                     if (canEditProducts()) {
-                        const editBtn = document.createElement("button");
-                        editBtn.className = "btn btn-outline-info btn-sm me-1 btn-action";
-                        editBtn.textContent = "Edit";
-                        editBtn.addEventListener("click", () => {
-                            showProductModal(p.id, p.name, p.price, p.stockQuantity, supplierId);
-                        });
-                        actionsCell.appendChild(editBtn);
-                        hasAnyAction = true;
+                        const btn = document.createElement("button");
+                        btn.className = "btn btn-outline-info btn-sm me-1 btn-action"; btn.textContent = "Edit";
+                        btn.addEventListener("click", () => showProductModal(p.id, p.name, p.price, p.stockQuantity, supplierId));
+                        actionsCell.appendChild(btn); any = true;
                     }
-
                     if (canDeleteProducts()) {
-                        const deleteBtn = document.createElement("button");
-                        deleteBtn.className = "btn btn-outline-danger btn-sm btn-action";
-                        deleteBtn.textContent = "Delete";
-                        deleteBtn.addEventListener("click", () => {
-                            deleteProduct(p.id);
-                        });
-                        actionsCell.appendChild(deleteBtn);
-                        hasAnyAction = true;
+                        const btn = document.createElement("button");
+                        btn.className = "btn btn-outline-danger btn-sm btn-action"; btn.textContent = "Delete";
+                        btn.addEventListener("click", () => deleteProduct(p.id));
+                        actionsCell.appendChild(btn); any = true;
                     }
-
-                    if (!hasAnyAction) {
-                        actionsCell.innerHTML = "<span class='text-muted-soft'>View only</span>";
-                    }
-
+                    if (!any) actionsCell.innerHTML = "<span class='text-muted-soft'>View only</span>";
                     tbody.appendChild(tr);
                 });
             })
             .catch(() => {
-                const tbody = document.querySelector("#allProductsTable tbody");
-                tbody.innerHTML = "<tr><td colspan='5' class='text-center text-muted-soft'>Error loading products</td></tr>";
+                container.innerHTML = buildEmptyState(
+                    "fa-solid fa-circle-exclamation",
+                    "Could not load products",
+                    "There was a problem reaching the server. Please check your connection and try Refresh.",
+                    "error"
+                );
             });
     }
 
     function loadLowStock() {
-        fetch("/api/products/low-stock?threshold=10")
+        const container = document.getElementById("lowStockContainer");
+        fetch("/api/products/low-stock?threshold=10", { headers: getHeaders() })
             .then(r => r.json())
             .then(products => {
-                const tbody = document.querySelector("#lowStockTable tbody");
-                tbody.innerHTML = "";
                 if (!products.length) {
-                    tbody.innerHTML = "<tr><td colspan='3' class='text-center text-muted-soft'>All stocks healthy</td></tr>";
+                    container.innerHTML = buildEmptyState(
+                        "fa-solid fa-circle-check",
+                        "All stocks healthy",
+                        "No products are running low. Items will appear here automatically when stock drops to 10 or below.",
+                        "success"
+                    );
                     return;
                 }
-
+                container.innerHTML = buildTableShell("lowStockTable", [
+                    { label: "Name" }, { label: "Stock" }, { label: "Supplier" }
+                ]);
+                const tbody = container.querySelector("tbody");
                 products.forEach(p => {
                     const tr = document.createElement("tr");
+                    const status = stockStatus(p.stockQuantity);
                     tr.innerHTML = ""
-                        + "<td>" + escapeHtml(p.name) + "</td>"
+                        + "<td><span class='product-name'><span class='stock-dot " + status + "'></span>" + escapeHtml(p.name) + "</span></td>"
                         + "<td><span class='badge-low'>" + p.stockQuantity + "</span></td>"
                         + "<td>" + (p.supplier ? escapeHtml(p.supplier.name) : "-") + "</td>";
                     tbody.appendChild(tr);
                 });
             })
             .catch(() => {
-                const tbody = document.querySelector("#lowStockTable tbody");
-                tbody.innerHTML = "<tr><td colspan='3' class='text-center text-muted-soft'>Error loading low stock</td></tr>";
+                container.innerHTML = buildEmptyState(
+                    "fa-solid fa-circle-exclamation",
+                    "Could not load low stock",
+                    "There was a problem reaching the server. Please check your connection and try Refresh.",
+                    "error"
+                );
             });
     }
 
     function loadAuditLogs() {
-        const tbody = document.querySelector("#auditLogsTable tbody");
-        if (!tbody) return;
-
-        if (!canViewAuditLogs()) {
-            tbody.innerHTML = "";
-            return;
-        }
-
-        fetch("/api/audit-logs", {
-            method: "GET",
-            headers: getHeaders()
-        })
-            .then(r => {
-                if (!r.ok) throw new Error("Failed to load audit logs");
-                return r.json();
-            })
+        const container = document.getElementById("auditLogsContainer");
+        if (!container) return;
+        if (!canViewAuditLogs()) { container.innerHTML = ""; return; }
+        fetch("/api/audit-logs", { method: "GET", headers: getHeaders() })
+            .then(r => { if (!r.ok) throw new Error("Failed"); return r.json(); })
             .then(logs => {
-                tbody.innerHTML = "";
                 if (!logs.length) {
-                    tbody.innerHTML = "<tr><td colspan='5' class='text-center text-muted-soft'>No audit logs yet</td></tr>";
+                    container.innerHTML = buildEmptyState(
+                        "fa-solid fa-clipboard-list",
+                        "No activity recorded yet",
+                        "Audit entries appear here when users add, edit or delete products. Every change is tracked for accountability."
+                    );
                     return;
                 }
-
+                container.innerHTML = buildTableShell("auditLogsTable", [
+                    { label: "User" }, { label: "Action" }, { label: "Entity" }, { label: "Details" }, { label: "Timestamp" }
+                ]);
+                const tbody = container.querySelector("tbody");
                 logs.forEach(log => {
                     const tr = document.createElement("tr");
                     const entityLabel = escapeHtml(log.entityType || "-") + (log.entityId ? " #" + log.entityId : "");
                     const timeLabel = log.createdAt ? new Date(log.createdAt).toLocaleString() : "-";
-
-                    tr.innerHTML = ""
-                        + "<td>" + escapeHtml(log.username || "-") + "</td>"
-                        + "<td><span class='badge-low'>" + escapeHtml(log.action || "-") + "</span></td>"
-                        + "<td>" + entityLabel + "</td>"
-                        + "<td>" + escapeHtml(log.details || "-") + "</td>"
-                        + "<td>" + escapeHtml(timeLabel) + "</td>";
+                    tr.innerHTML = "<td>" + escapeHtml(log.username || "-") + "</td><td><span class='badge-low'>" + escapeHtml(log.action || "-") + "</span></td><td>" + entityLabel + "</td><td>" + escapeHtml(log.details || "-") + "</td><td>" + escapeHtml(timeLabel) + "</td>";
                     tbody.appendChild(tr);
                 });
             })
             .catch(() => {
-                tbody.innerHTML = "<tr><td colspan='5' class='text-center text-muted-soft'>Error loading audit logs</td></tr>";
+                container.innerHTML = buildEmptyState(
+                    "fa-solid fa-circle-exclamation",
+                    "Could not load audit logs",
+                    "There was a problem reaching the server. Please check your connection and try Refresh.",
+                    "error"
+                );
             });
     }
 
@@ -696,68 +533,32 @@
     }
 
     function saveProduct() {
-        if (!authHeader) {
-            alert("You must be logged in to modify products.");
-            return;
-        }
-
+        if (!authHeader) { alert("You must be logged in."); return; }
         const id = document.getElementById("productId").value;
-        if (id && !canEditProducts()) {
-            alert("You do not have permission to edit products.");
-            return;
-        }
-        if (!id && !canAddProducts()) {
-            alert("You do not have permission to add products.");
-            return;
-        }
-
+        if (id && !canEditProducts()) { alert("No permission to edit."); return; }
+        if (!id && !canAddProducts()) { alert("No permission to add."); return; }
         const dto = {
             name: document.getElementById("productName").value,
             price: parseFloat(document.getElementById("productPrice").value),
             quantity: parseInt(document.getElementById("productQuantity").value, 10),
-            supplierId: document.getElementById("productSupplierId").value
-                ? parseInt(document.getElementById("productSupplierId").value, 10)
-                : null
+            supplierId: document.getElementById("productSupplierId").value ? parseInt(document.getElementById("productSupplierId").value, 10) : null
         };
-
         const url = id ? "/api/products/" + id : "/api/products";
         const method = id ? "PUT" : "POST";
-
-        fetch(url, {
-            method: method,
-            headers: getHeaders(),
-            body: JSON.stringify(dto)
-        }).then(r => {
-            if (r.ok) {
-                bootstrap.Modal.getInstance(document.getElementById("productModal")).hide();
-                refreshLists();
-            } else {
-                r.text().then(t => alert("Error saving product: " + t));
-            }
-        }).catch(err => alert("Network error: " + err));
+        fetch(url, { method, headers: getHeaders(), body: JSON.stringify(dto) })
+            .then(r => {
+                if (r.ok) { bootstrap.Modal.getInstance(document.getElementById("productModal")).hide(); refreshLists(); }
+                else r.text().then(t => alert("Error saving product: " + t));
+            }).catch(err => alert("Network error: " + err));
     }
 
     function deleteProduct(id) {
-        if (!authHeader) {
-            alert("You must be logged in to delete products.");
-            return;
-        }
-        if (!canDeleteProducts()) {
-            alert("You do not have permission to delete products.");
-            return;
-        }
+        if (!authHeader) { alert("You must be logged in."); return; }
+        if (!canDeleteProducts()) { alert("No permission to delete."); return; }
         if (!confirm("Delete this product?")) return;
-
-        fetch("/api/products/" + id, {
-            method: "DELETE",
-            headers: getHeaders()
-        }).then(r => {
-            if (r.ok) {
-                refreshLists();
-            } else {
-                r.text().then(t => alert("Error deleting product: " + t));
-            }
-        }).catch(err => alert("Network error: " + err));
+        fetch("/api/products/" + id, { method: "DELETE", headers: getHeaders() })
+            .then(r => { if (r.ok) refreshLists(); else r.text().then(t => alert("Error deleting product: " + t)); })
+            .catch(err => alert("Network error: " + err));
     }
 
     function showRegisterModal() {
@@ -770,27 +571,16 @@
     function registerUser() {
         const username = document.getElementById("regUsername").value.trim();
         const password = document.getElementById("regPassword").value;
-        if (!username || !password) {
-            alert("Please fill username and password");
-            return;
-        }
-
-        fetch("/api/auth/register", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ username: username, password: password })
-        }).then(r => {
-            if (r.ok) {
-                alert("User registered successfully. You can now login.");
-                bootstrap.Modal.getInstance(document.getElementById("registerModal")).hide();
-            } else {
-                r.text().then(t => alert("Error registering user: " + t));
-            }
-        }).catch(err => alert("Network error: " + err));
+        if (!username || !password) { alert("Please fill username and password"); return; }
+        fetch("/api/auth/register", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ username, password }) })
+            .then(r => {
+                if (r.ok) { alert("User registered successfully."); bootstrap.Modal.getInstance(document.getElementById("registerModal")).hide(); }
+                else r.text().then(t => alert("Error registering user: " + t));
+            }).catch(err => alert("Network error: " + err));
     }
 
-    updateLoginUI();
-    refreshLists();
+    document.getElementById("username").addEventListener("keydown", e => { if (e.key === "Enter") login(); });
+    document.getElementById("password").addEventListener("keydown", e => { if (e.key === "Enter") login(); });
 </script>
 </body>
 </html>

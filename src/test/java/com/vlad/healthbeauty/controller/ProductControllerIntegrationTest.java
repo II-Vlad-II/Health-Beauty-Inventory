@@ -67,6 +67,18 @@ class ProductControllerIntegrationTest {
     }
 
     @Test
+    void getLowStockProducts_shouldReturnOnlyProductsBelowOrEqualToThreshold() throws Exception {
+        seedProduct("Low Stock Product", 4);
+        seedProduct("Healthy Stock Product", 25);
+
+        mockMvc.perform(get("/api/products/low-stock")
+                        .param("threshold", "10"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(1))
+                .andExpect(jsonPath("$[0].name").value("Low Stock Product"));
+    }
+
+    @Test
     void createProduct_withoutAuth_shouldReturn401() throws Exception {
         mockMvc.perform(post("/api/products")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -201,12 +213,16 @@ class ProductControllerIntegrationTest {
     }
 
     private Product seedProduct(String name) {
+        return seedProduct(name, 10);
+    }
+
+    private Product seedProduct(String name, int quantity) {
         Product product = new Product();
         product.setName(name);
         product.setBrand("Brand X");
         product.setCategory("Skin");
         product.setPrice(new BigDecimal("19.99"));
-        product.setStockQuantity(10);
+        product.setStockQuantity(quantity);
         product.setLowStockThreshold(2);
         product.setActive(true);
         return productRepository.save(product);
