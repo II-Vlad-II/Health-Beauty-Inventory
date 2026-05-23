@@ -421,13 +421,24 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header bg-warning">
-                <h5 class="modal-title">Edit User Role</h5>
+                <h5 class="modal-title">Edit User</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                <p><strong>User:</strong> <span id="editUserName"></span></p>
                 <div class="mb-2">
-                    <label class="form-label">New Role</label>
+                    <label class="form-label">Full Name</label>
+                    <input id="editUserFullName" class="form-control" required>
+                </div>
+                <div class="mb-2">
+                    <label class="form-label">Username</label>
+                    <input id="editUserUsername" class="form-control" required>
+                </div>
+                <div class="mb-2">
+                    <label class="form-label">New Password (leave blank to keep current)</label>
+                    <input id="editUserPassword" type="password" class="form-control" placeholder="Optional">
+                </div>
+                <div class="mb-2">
+                    <label class="form-label">Role</label>
                     <select id="editUserRole" class="form-select" required>
                         <option value="ROLE_SALES_ASSISTANT">Sales Assistant</option>
                         <option value="ROLE_SUPERVISOR">Supervisor</option>
@@ -438,7 +449,7 @@
             </div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button class="btn btn-warning" onclick="saveUserRole()">Save Changes</button>
+                <button class="btn btn-warning" onclick="saveUserChanges()">Save Changes</button>
             </div>
         </div>
     </div>
@@ -533,7 +544,7 @@
                 alert("Invalid username or password."); return;
             }
             const data = await response.json();
-            currentUser = data.username || user;
+            currentUser = data.fullName || data.username || user;
             const roles = Array.isArray(data.roles) ? data.roles : [];
             if (roles.includes("ROLE_ADMIN")) currentRole = "ADMIN";
             else if (roles.includes("ROLE_MANAGER")) currentRole = "MANAGER";
@@ -845,7 +856,7 @@
                         <td>${escapeHtml(u.username)}</td>
                         <td><span class="badge bg-primary">${roleDisplay}</span></td>
                         <td>
-                            <button class="btn btn-sm btn-warning" onclick="editUser(${u.id}, '${escapeHtml(u.fullName)}', '${u.role}')">
+                            <button class="btn btn-sm btn-warning" onclick="editUser(${u.id}, '${escapeHtml(u.fullName)}', '${escapeHtml(u.username)}', '${u.role}')">
                                 <i class="fas fa-edit"></i> Edit
                             </button>
                             <button class="btn btn-sm btn-danger" onclick="deleteUser(${u.id}, '${escapeHtml(u.fullName)}')">
@@ -859,9 +870,11 @@
             .catch(() => alert("Error loading users"));
     }
 
-    function editUser(id, fullName, currentRole) {
+    function editUser(id, fullName, username, currentRole) {
         currentEditUserId = id;
-        document.getElementById("editUserName").textContent = fullName;
+        document.getElementById("editUserFullName").value = fullName;
+        document.getElementById("editUserUsername").value = username;
+        document.getElementById("editUserPassword").value = "";  // Clear password field
         document.getElementById("editUserRole").value = currentRole;
 
         bootstrap.Modal.getInstance(document.getElementById("usersModal")).hide();
@@ -869,23 +882,42 @@
         editModal.show();
     }
 
-    function saveUserRole() {
+    function saveUserChanges() {
         if (!currentEditUserId) return;
 
-        const newRole = document.getElementById("editUserRole").value;
+        const fullName = document.getElementById("editUserFullName").value.trim();
+        const username = document.getElementById("editUserUsername").value.trim();
+        const password = document.getElementById("editUserPassword").value;  // Optional
+        const role = document.getElementById("editUserRole").value;
+
+        if (!fullName || !username) {
+            alert("Full name and username are required");
+            return;
+        }
+
+        const updateData = {
+            fullName: fullName,
+            username: username,
+            role: role
+        };
+
+        // Only include password if it was entered
+        if (password && password.trim() !== "") {
+            updateData.password = password;
+        }
 
         fetch(`/api/users/${currentEditUserId}`, {
             method: "PUT",
             headers: getHeaders(),
-            body: JSON.stringify({ role: newRole })
+            body: JSON.stringify(updateData)
         })
             .then(r => {
                 if (r.ok) {
-                    alert("User role updated successfully");
+                    alert("User updated successfully");
                     bootstrap.Modal.getInstance(document.getElementById("editUserModal")).hide();
                     showUsersModal();
                 } else {
-                    r.json().then(data => alert("Error: " + (data.error || "Failed to update role")));
+                    r.json().then(data => alert("Error: " + (data.error || "Failed to update user")));
                 }
             })
             .catch(err => alert("Network error: " + err));

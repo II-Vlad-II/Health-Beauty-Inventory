@@ -31,18 +31,25 @@ public class AuthController {
     private PasswordEncoder passwordEncoder;
 
     @GetMapping("/me")
-    @Operation(summary = "Get current authenticated user", description = "Access: Authenticated. Returns username and roles.")
+    @Operation(summary = "Get current authenticated user", description = "Access: Authenticated. Returns username, full name, and roles.")
     public ResponseEntity<Map<String, Object>> me(Authentication authentication) {
         if (authentication == null || !authentication.isAuthenticated()) {
             return ResponseEntity.status(401).build();
         }
 
+        String username = authentication.getName();
         List<String> roles = authentication.getAuthorities().stream()
                 .map(a -> a.getAuthority())
                 .collect(Collectors.toList());
 
+        // Get full name from database
+        String fullName = userRepository.findByUsername(username)
+                .map(User::getFullName)
+                .orElse(username);  // Fallback to username if not found
+
         return ResponseEntity.ok(Map.of(
-                "username", authentication.getName(),
+                "username", username,
+                "fullName", fullName,
                 "roles", roles
         ));
     }

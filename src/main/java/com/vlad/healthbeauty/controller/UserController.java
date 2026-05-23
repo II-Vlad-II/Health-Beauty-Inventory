@@ -8,6 +8,7 @@ import com.vlad.healthbeauty.service.AuditLogService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -20,11 +21,13 @@ public class UserController {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final AuditLogService auditLogService;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserController(UserRepository userRepository, RoleRepository roleRepository, AuditLogService auditLogService) {
+    public UserController(UserRepository userRepository, RoleRepository roleRepository, AuditLogService auditLogService, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.auditLogService = auditLogService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping
@@ -53,37 +56,82 @@ public class UserController {
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    @Operation(summary = "Update user role", description = "Access: ROLE_ADMIN only")
-    public ResponseEntity<?> updateUserRole(@PathVariable Long id, @RequestBody Map<String, String> body) {
+    @Operation(summary = "Update user", description = "Access: ROLE_ADMIN only. Can update full name, username, password, and role.")
+    public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody Map<String, String> body) {
         Optional<User> userOpt = userRepository.findById(id);
         if (userOpt.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
 
         User user = userOpt.get();
-        String newRoleName = body.get("role");
-        
-        Optional<Role> newRole = roleRepository.findByName(newRoleName);
-        if (newRole.isEmpty()) {
-            return ResponseEntity.badRequest().body(Map.of("error", "Invalid role"));
+        StringBuilder changes = new StringBuilder("Updated user " + user.getFullName() + ": ");
+        boolean hasChanges = false;
+
+        // Update full name
+        if (body.containsKey("fullName") && !body.get("fullName").trim().isEmpty()) {
+            String oldFullName = user.getFullName();
+            user.setFullName(body.get("fullName").trim());
+            changes.append("name changed from '").append(oldFullName).append("' to '").append(user.getFullName()).append("', ");
+            hasChanges = true;
         }
 
-        String oldRole = user.getRoles().stream()
-            .findFirst()
-            .map(Role::getName)
-            .orElse("UNKNOWN");
+        // Update username
+        if (body.containsKey("username") && !body.get("username").trim().isEmpty()) {
+            String newUsername = body.get("username").trim();
+            // Check if username already exists (and it's not the current user's username)
+            if (!newUsername.equals(user.getUsername()) && userRepository.findByUsername(newUsername).isPresent()) {
+                return ResponseEntity.badRequest().body(Map.of("error", "Username already exists"));
+            }
+            String oldUsername = user.getUsername();
+            user.setUsername(newUsername);
+            changes.append("username changed from '").append(oldUsername).append("' to '").append(newUsername).append("', ");
+            hasChanges = true;
+        }
 
-        user.setRoles(Set.of(newRole.get()));
+        // Update password (only if provided)
+        if (body.containsKey("password") && !body.get("password").trim().isEmpty()) {
+            user.setPassword(passwordEncoder.encode(body.get("password")));
+            changes.append("password changed, ");
+            hasChanges = true;
+        }
+
+        // Update role
+        if (body.containsKey("role") && !body.get("role").trim().isEmpty()) {
+            String newRoleName = body.get("role");
+            Optional<Role> newRole = roleRepository.findByName(newRoleName);
+            if (newRole.isEmpty()) {
+                return ResponseEntity.badRequest().body(Map.of("error", "Invalid role"));
+            }
+
+            String oldRole = user.getRoles().stream()
+                .findFirst()
+                .map(Role::getName)
+                .orElse("UNKNOWN");
+
+            if (!oldRole.equals(newRoleName)) {
+                user.setRoles(Set.of(newRole.get()));
+                changes.append("role changed from ").append(oldRole).append(" to ").append(newRoleName);
+                hasChanges = true;
+            }
+        }
+
+        if (!hasChanges) {
+            return ResponseEntity.badRequest().body(Map.of("error", "No changes provided"));
+        }
+
         userRepository.save(user);
 
+        // Remove trailing comma and space if present
+        String changeLog = changes.toString().replaceAll(", $", "");
+        
         auditLogService.log(
-            "UPDATE_ROLE",
+            "UPDATE",
             "USER",
             user.getId(),
-            "Changed role for " + user.getFullName() + " from " + oldRole + " to " + newRoleName
+            changeLog
         );
 
-        return ResponseEntity.ok(Map.of("message", "User role updated successfully"));
+        return ResponseEntity.ok(Map.of("message", "User updated successfully"));
     }
 
     @DeleteMapping("/{id}")
